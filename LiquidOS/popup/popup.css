@@ -1,0 +1,89 @@
+:root {
+  --ink: #0b1f33;
+  --muted: rgba(11, 31, 51, .58);
+  --glass: rgba(255, 255, 255, .62);
+  --glass-strong: rgba(255, 255, 255, .86);
+  --edge: rgba(255, 255, 255, .9);
+  --blue: #0a84ff;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0; width: 356px; padding: 13px 14px 10px;
+  font: 500 13px/1.35 var(--font); color: var(--ink);
+  background:
+    radial-gradient(120% 70% at 0% 0%, #d9f1ff 0, transparent 60%),
+    radial-gradient(120% 80% at 100% 100%, #b8d4ff 0, transparent 60%),
+    linear-gradient(160deg, #eaf6ff, #c5dcf8);
+}
+
+header { display: flex; justify-content: space-between; align-items: flex-start; margin: 0 4px 9px; }
+h1 { margin: 0; font-size: 21px; font-weight: 800; letter-spacing: -.03em; }
+h1 span { color: var(--blue); }
+header p { margin: 1px 0 0; color: var(--muted); font-size: 12px; }
+.badge {
+  font-size: 11px; font-weight: 600; padding: 4px 9px; border-radius: 999px;
+  background: rgba(52, 199, 89, .16); color: #1c7c3a;
+}
+
+.eyebrow { font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.eyebrow.pad { margin: 10px 4px 6px; }
+
+.card {
+  background: var(--glass); border: 1px solid var(--edge); border-radius: 20px; padding: 12px 14px;
+  box-shadow: inset 0 1px 0 #fff, 0 6px 18px rgba(20, 70, 140, .12);
+}
+.row { display: flex; justify-content: space-between; align-items: flex-end; }
+.title { font-size: 18px; font-weight: 700; letter-spacing: -.02em; margin-top: 1px; }
+.state { font-size: 13px; font-weight: 700; color: var(--blue); }
+.hint { margin-top: 8px; font-size: 11.5px; color: var(--muted); min-height: 16px; }
+
+.segments {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; margin-top: 11px; padding: 3px;
+  background: rgba(11, 31, 51, .08); border-radius: 12px;
+}
+.segments button {
+  all: unset; text-align: center; padding: 7px 0; border-radius: 9px; cursor: pointer;
+  font: 700 12px var(--font); color: var(--muted);
+}
+.segments button:hover { background: rgba(255, 255, 255, .5); }
+.segments button.on { background: #fff; color: var(--blue); box-shadow: 0 1px 4px rgba(11, 31, 51, .18); }
+.segments button:focus-visible, .tile:focus-visible, .actions button:focus-visible, footer button:focus-visible {
+  outline: 2px solid var(--blue); outline-offset: 2px;
+}
+
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.tile {
+  all: unset; box-sizing: border-box; cursor: pointer; display: flex; gap: 10px; align-items: center;
+  padding: 8px 11px; border-radius: 18px; background: var(--glass); border: 1px solid var(--edge);
+  box-shadow: inset 0 1px 0 #fff, 0 4px 12px rgba(20, 70, 140, .09);
+  transition: background .15s, color .15s;
+}
+.tile:hover { background: var(--glass-strong); }
+.tile .icon {
+  flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(11, 31, 51, .1); color: var(--ink); transition: background .15s, color .15s;
+}
+.tile .icon svg { width: 18px; height: 18px; }
+.tile .name { font-weight: 700; font-size: 12px; line-height: 1.2; white-space: nowrap; }
+.tile .sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.tile.on { background: var(--glass-strong); }
+.tile.on .icon { background: var(--blue); color: #fff; }
+.tile.on .sub { color: var(--blue); font-weight: 600; }
+
+.actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.actions button {
+  all: unset; box-sizing: border-box; text-align: center; cursor: pointer; padding: 8px 4px; border-radius: 12px;
+  background: var(--glass); border: 1px solid var(--edge); font: 600 12px var(--font);
+}
+.actions button:hover { background: var(--glass-strong); }
+.actions button small { display: block; font-weight: 500; font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+footer { display: flex; align-items: center; gap: 10px; margin: 10px 4px 0; font-size: 11px; color: var(--muted); }
+footer button {
+  all: unset; cursor: pointer; padding: 7px 12px; border-radius: 999px; font: 600 12px var(--font);
+  background: rgba(11, 31, 51, .08); color: var(--ink);
+}
+footer button:hover { background: rgba(11, 31, 51, .14); }

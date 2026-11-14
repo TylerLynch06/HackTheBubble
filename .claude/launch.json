@@ -4,7 +4,7 @@
     {
       "name": "liquid-life-demo",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8123", "--directory", "LiquidLife"],
+      "runtimeArgs": ["-m", "http.server", "8123", "--directory", "LiquidOS"],
       "port": 8123
     }
   ]
