@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Liquid Life",
+  "version": "0.7.0",
+  "description": "The web, finally wet. Our most liquid browser ever.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Liquid Life",
+    "default_popup": "popup/popup.html",
+    "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png" }
+  },
+  "permissions": ["storage"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "run_at": "document_idle",
+      "js": [
+        "src/water/engine.js",
+        "src/water/refract.js",
+        "src/core.js",
+        "src/bodies.js",
+        "src/sea/cursor.js",
+        "src/sea/scene.js",
+        "src/sea/models.js",
+        "src/effects/cursor-wake.js",
+        "src/effects/ambient.js",
+        "src/effects/scroll-slosh.js",
+        "src/effects/typing-drips.js",
+        "src/effects/buoyancy.js",
+        "src/effects/ducks.js",
+        "src/effects/ships.js",
+        "src/effects/kraken.js",
+        "src/effects/megalodon.js",
+        "src/effects/whale.js",
+        "src/sea/director.js",
+        "src/effects/business.js",
+        "src/effects/notifications.js",
+        "src/effects/flotsam.js",
+        "src/effects/whirlpool.js",
+        "src/boot.js"
+      ]
+    }
+  ]
+}
