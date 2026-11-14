@@ -1,7 +1,7 @@
-// Flotsam (Chaos): letters knocked off the page. Each one leaves a hole in the
-// text and becomes a loose floating body (see bodies.js). The tide knocks letters
-// off at its leading edge; at Chaos (stage 5) they also come loose at random.
-// stop() puts every letter back.
+// Flotsam: letters knocked off the page. Each one leaves a hole in the text and
+// becomes a loose floating body (see bodies.js). Cannonballs that miss knock
+// letters off; at Chaos (level 5) they also come loose at random. The megalodon
+// eats whole words the same way. stop() puts everything back.
 //
 //   Liquid.flotsam.knockAt(x, y)   knock loose the character under a viewport point
 (() => {

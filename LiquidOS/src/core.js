@@ -52,7 +52,7 @@
       return !!(e && e.closest && e.closest('[data-lq]'));
     },
 
-    // Full-viewport overlay above the water for toasts, tide and flotsam.
+    // Full-viewport overlay above the water for alerts, sea creatures and flotsam.
     layer() {
       if (!layerEl || !layerEl.isConnected) {
         layerEl = util.el('div', {
