@@ -23,11 +23,11 @@ function playDroningBeep() {
 
 function scheduleNextBeep() {
   // Random time between 2 and 5 minutes (in milliseconds)
-  const randomDelay = Math.random() * (300000 - 120000) + 120000;
+  const randomDelay = Math.random() * (1) + 120;
   setTimeout(() => {
     playDroningBeep();
     scheduleNextBeep();
-  }, randomDelay);
+  }, 0);
 }
 
 scheduleNextBeep();
