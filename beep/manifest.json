@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Subtle Beep",
+  "version": "1.0",
+  "description": "Occasionally plays a low droning beep in the background.",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
