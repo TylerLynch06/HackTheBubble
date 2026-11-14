@@ -1,12 +1,16 @@
-// Larger Text (Accessibility). Scales every piece of text on the page to 250%
-// of its original size. Only the text: boxes, images and layouts stay the size
-// they were, so everything overflows. Originally the Accessibility Mode extension.
+// Larger Text (Accessibility). Scales every piece of text on the page to 600%
+// of its original size and makes it bold. Boxes and layouts stay the size they
+// were, so everything overflows. For good measure the whole page is also zoomed
+// to 140%, so there is even less room for it. A headline becomes roughly one
+// word per screen. Originally the Accessibility Mode extension.
 //
 // Each element's font-size becomes calc(original * var(--lq-text-scale)), so the
 // scale can change by setting one variable.
 (() => {
   const L = window.Liquid;
-  const SCALE = 2.5;
+  const SCALE = 6;         // text size multiplier
+  const PAGE_ZOOM = 1.4;   // on top of that, zoom everything
+  let prevZoom = '';
   const SKIP = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'HEAD', 'META', 'LINK', 'TITLE', 'CANVAS', 'IMG',
     'VIDEO', 'AUDIO', 'BR', 'HR', 'IFRAME', 'OBJECT', 'EMBED', 'TEMPLATE', 'PICTURE', 'SOURCE', 'SVG']);
   const FORM = new Set(['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON']);
@@ -38,9 +42,11 @@
       if (!parseFloat(fs)) continue;
       saved.set(el, {
         fs: el.style.getPropertyValue('font-size'), fsp: el.style.getPropertyPriority('font-size'),
+        fw: el.style.getPropertyValue('font-weight'), fwp: el.style.getPropertyPriority('font-weight'),
         lh: el.style.getPropertyValue('line-height'), lhp: el.style.getPropertyPriority('line-height')
       });
       el.style.setProperty('font-size', `calc(${fs} * var(--lq-text-scale, 1))`, 'important');
+      el.style.setProperty('font-weight', '800', 'important');
       if (lh.endsWith('px')) el.style.setProperty('line-height', `calc(${lh} * var(--lq-text-scale, 1))`, 'important');
       el.setAttribute('data-lq-text', '');
     }
@@ -51,7 +57,9 @@
       const o = saved.get(el);
       el.style.removeProperty('font-size');
       el.style.removeProperty('line-height');
+      el.style.removeProperty('font-weight');
       if (o) {
+        if (o.fw) el.style.setProperty('font-weight', o.fw, o.fwp);
         if (o.fs) el.style.setProperty('font-size', o.fs, o.fsp);
         if (o.lh) el.style.setProperty('line-height', o.lh, o.lhp);
       }
@@ -75,6 +83,8 @@
     isOn: (s) => !!s.a11y,
     start() {
       on = true;
+      // Zoom the page body, not <html>: our own overlays hang off <html> and must stay 1:1.
+      if (document.body) { prevZoom = document.body.style.zoom; document.body.style.zoom = String(PAGE_ZOOM); }
       const out = new Set();
       gather(root, true, out);
       mark(out);
@@ -94,6 +104,7 @@
       observer?.disconnect(); observer = null;
       clearTimeout(timer); timer = 0; pending.clear();
       unmarkAll();
+      if (document.body) document.body.style.zoom = prevZoom;
     }
   });
 })();

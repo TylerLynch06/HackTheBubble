@@ -8,13 +8,13 @@ operating-system update for the web: a new design language (Liquid Life) and fiv
 | Feature | What it says it does | What it does |
 |---|---|---|
 | **Liquid Life** | A fluid new design language | Turns the page into water, with whirlpools, ships, a kraken, a megalodon and a paywall to make it stop |
-| **Larger Text** | Improves legibility | Scales all text to 250%; nothing else grows, so everything overflows |
+| **Larger Text** | Improves legibility | All text at 600% and bold, page zoomed to 140%; about one word per screen |
 | **Dark Mode** | Easier on the eyes | Blacks out the page except a small beam at the cursor |
 | **Light Mode** | Maximum brightness | Floods the page with white |
 | **Focus** | Removes distractions | One Google result. On other sites, one paragraph |
 | **Low Power Mode** | Saves energy | About 4 frames a second, in chunky pixels |
 | **Read Aloud** | Reads the page to you | At 8.5x speed |
-| **Zen Mode** | Calming white noise | A low two-second drone at random intervals |
+| **Zen Mode** | Calming white noise | Low drones at unpredictable moments and volumes, or one that never stops |
 
 By default the product misbehaves in two ways, each with a switch in the admin panel:
 
@@ -42,7 +42,8 @@ The toolbar icon opens the **Control Centre**. Everything also has a hotkey (cli
 |---|---|
 | Alt+0 ... Alt+5 | Liquid Life level: Off, Calm, Wake, High Seas, Buoyancy, Chaos |
 | Alt+. / Alt+, | Next / previous level |
-| Alt+Shift+A / D / L / F / E / R / Z | Larger Text / Dark Mode / Light Mode / Focus / Low Power / Read Aloud / Zen Mode |
+| Alt+Shift+A / D / L / F / E / R | Larger Text / Dark Mode / Light Mode / Focus / Low Power / Read Aloud |
+| Alt+Shift+Z / X | Zen Mode random / constant |
 | Alt+S / K / M / H | Summon ships / kraken / megalodon / whale (High Seas) |
 | Alt+W | Whirlpool at the cursor (or circle the mouse fast, five laps) |
 | Alt+P | Liquid Life Dry(TM) store |

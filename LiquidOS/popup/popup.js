@@ -15,13 +15,14 @@ const STAGES = [
 
 const icon = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const FEATURES = [
-  { id: 'a11y', name: 'Larger Text', key: 'A', on: 'On · 250%', icon: icon('<path d="M4 19 9.5 5h1L16 19M6 14h8M17 19l2.5-7h.5l2.5 7M18 17h4"/>') },
+  { id: 'a11y', name: 'Larger Text', key: 'A', on: 'On · 600%', icon: icon('<path d="M4 19 9.5 5h1L16 19M6 14h8M17 19l2.5-7h.5l2.5 7M18 17h4"/>') },
   // one tile for both: each tap moves on, Off -> Dark -> Light -> Off
   { id: 'appearance', name: 'Appearance', key: 'D / L', on: 'Dark', icon: icon('<path d="M20 14.5A8 8 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5Z"/>') },
   { id: 'focus', name: 'Focus', key: 'F', on: 'On · 1 item', icon: icon('<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/>') },
   { id: 'lowPower', name: 'Low Power', key: 'E', on: 'On · 4 fps', icon: icon('<rect x="3" y="8" width="16" height="9" rx="2.5"/><path d="M21.5 11v3M6 11v3"/>') },
   { id: 'readAloud', name: 'Read Aloud', key: 'R', on: 'On · 8.5×', icon: icon('<path d="M4 10v4h3l4 3.5v-11L7 10H4ZM15 9.5a3.5 3.5 0 0 1 0 5M17.5 7a7 7 0 0 1 0 10"/>') },
-  { id: 'zen', name: 'Zen Mode', key: 'Z', on: 'On · White noise', icon: icon('<path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7 2.5 7h-17S6 15 6 9ZM10 20a2 2 0 0 0 4 0"/>') }
+  // each tap moves on, Off -> Random -> Constant -> Off
+  { id: 'zen', name: 'Zen Mode', key: 'Z / X', on: 'Random', icon: icon('<path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7 2.5 7h-17S6 15 6 9ZM10 20a2 2 0 0 0 4 0"/>') }
 ];
 
 const ACTIONS = [
@@ -31,11 +32,12 @@ const ACTIONS = [
 
 let stage = 1, settings = { ...DEFAULTS };
 
-const isOn = (id) => id === 'appearance' ? settings.dark !== 'off' : !!settings[id];
+const isOn = (id) => id === 'appearance' ? settings.dark !== 'off' : id === 'zen' ? !!settings.zen && settings.zen !== 'off' : !!settings[id];
 
 function toggle(id) {
   const next = { ...settings };
   if (id === 'appearance') next.dark = { off: 'torch', torch: 'blinding', blinding: 'off' }[settings.dark] || 'off';
+  else if (id === 'zen') next.zen = settings.zen === 'constant' ? false : settings.zen ? 'constant' : 'random';
   else next[id] = !settings[id];
   chrome.storage.local.set({ [OS_KEY]: next });
 }
@@ -70,7 +72,8 @@ function render() {
     ic.innerHTML = f.icon; // static markup defined above, never page content
     const text = document.createElement('span');
     const name = document.createElement('div'); name.className = 'name'; name.textContent = f.name;
-    const sub = document.createElement('div'); sub.className = 'sub'; sub.textContent = !on ? 'Off' : f.id === 'appearance' ? (settings.dark === 'blinding' ? 'Light · Maximum' : 'Dark') : f.on;
+    const sub = document.createElement('div'); sub.className = 'sub'; sub.textContent = !on ? 'Off' : f.id === 'appearance' ? (settings.dark === 'blinding' ? 'Light · Maximum' : 'Dark')
+      : f.id === 'zen' ? (settings.zen === 'constant' ? 'Constant' : 'Random') : f.on;
     text.append(name, sub);
     b.append(ic, text);
     b.addEventListener('click', () => toggle(f.id));

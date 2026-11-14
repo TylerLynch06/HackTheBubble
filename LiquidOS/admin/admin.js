@@ -22,7 +22,7 @@ const STAGES = [
 const FEATURES = [
   ['a11y', 'Larger Text', 'A'], ['dark', 'Dark Mode', 'D'], ['blinding', 'Light Mode', 'L'],
   ['focus', 'Focus', 'F'], ['lowPower', 'Low Power', 'E'], ['readAloud', 'Read Aloud', 'R'],
-  ['zen', 'Zen Mode', 'Z']
+  ['zen', 'Zen (random)', 'Z'], ['zenConstant', 'Zen (constant)', 'X']
 ];
 const ACTIONS = [
   ['ships', 'Ship battle'], ['kraken', 'Kraken'], ['megalodon', 'Megalodon'],
@@ -41,7 +41,9 @@ const GAGS = [
 let stage = 1, settings = { ...OS_DEFAULTS }, admin = { ...ADMIN_DEFAULTS }, chaosAt = 0;
 const $ = (id) => document.getElementById(id);
 const save = (obj) => chrome.storage.local.set(obj);
-const isOn = (id) => id === 'dark' ? settings.dark === 'torch' : id === 'blinding' ? settings.dark === 'blinding' : !!settings[id];
+const isOn = (id) => id === 'dark' ? settings.dark === 'torch' : id === 'blinding' ? settings.dark === 'blinding'
+  : id === 'zen' ? !!settings.zen && settings.zen !== 'off' && settings.zen !== 'constant'
+    : id === 'zenConstant' ? settings.zen === 'constant' : !!settings[id];
 
 function button(label, cls, onClick) {
   const b = document.createElement('button');
@@ -79,6 +81,8 @@ function render() {
       const next = { ...settings };
       if (id === 'dark') next.dark = on ? 'off' : 'torch';
       else if (id === 'blinding') next.dark = on ? 'off' : 'blinding';
+      else if (id === 'zen') next.zen = on ? false : 'random';
+      else if (id === 'zenConstant') next.zen = on ? false : 'constant';
       else next[id] = !on;
       save({ [OS_KEY]: next });
     });
@@ -105,7 +109,8 @@ function render() {
 // The countdown to the next automatic step, as the page itself shows it.
 function nextStepName() {
   if (stage < 5) return STAGES[stage + 1][0];
-  const off = FEATURES.filter(([id]) => id !== 'blinding' && !isOn(id) && !(id === 'dark' && settings.dark !== 'off'));
+  const off = FEATURES.filter(([id]) => id !== 'blinding' && id !== 'zenConstant' && !isOn(id) &&
+    !(id === 'dark' && settings.dark !== 'off') && !(id === 'zen' && settings.zen));
   return off.length ? 'a feature switches on' : null;
 }
 function renderChaos() {
