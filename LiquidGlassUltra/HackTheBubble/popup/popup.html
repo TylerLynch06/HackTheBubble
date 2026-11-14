@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Liquid Glass Ultra™</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+  <main class="glass">
+    <header>
+      <h1>Liquid Glass Ultra™</h1>
+      <p class="tag">Our most liquid browser ever.</p>
+    </header>
+
+    <label class="row master">
+      <span>Liquid mode</span>
+      <input type="checkbox" id="enabled" class="switch">
+    </label>
+
+    <label class="slider">
+      <span>Liquidity <b id="pct"></b></span>
+      <input type="range" id="intensity" min="0" max="100" step="1">
+    </label>
+
+    <section id="effects"></section>
+
+    <button id="drain">🚰 Drain everything</button>
+    <p class="panic">Panic: <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd> or <kbd>Esc</kbd> ×3 on the page</p>
+  </main>
+
+  <script src="../src/effect-list.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
