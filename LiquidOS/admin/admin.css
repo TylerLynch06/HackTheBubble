@@ -31,6 +31,14 @@ body.admin h1 span { color: #c2410c; }
 .switch-row input:checked::after { transform: translateX(18px); }
 .switch-row input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 
+.chaos { padding: 10px 14px 12px; border-radius: 18px; background: rgba(22, 24, 30, .9); color: #fff; }
+.chaos-line { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 12.5px; font-weight: 600; }
+.chaos-track { height: 5px; border-radius: 3px; background: rgba(255, 255, 255, .22); margin-top: 8px; overflow: hidden; }
+#chaosBar { height: 100%; width: 0; background: #ea580c; border-radius: 3px; }
+.chips.tight { gap: 4px; flex-wrap: nowrap; }
+.chips.tight button { padding: 3px 8px; font-size: 11px; background: rgba(255, 255, 255, .14); border-color: transparent; color: #fff; }
+.chips.tight button.on { background: #ea580c; }
+
 .note { margin: 2px 4px 0; font-size: 11.5px; color: var(--muted); min-height: 16px; }
 .card.slim { padding: 10px 12px; }
 

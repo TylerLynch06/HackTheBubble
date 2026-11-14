@@ -158,10 +158,12 @@
     }
   };
 
-  // Alerts land around the edge of the page, in whichever spot is least crowded.
+  // Alerts land anywhere on the page, edges and middle, in whichever spot is least crowded.
   const MAX_ALERTS = 10;
   const ACCENTS = ['#ff3b30', '#ff9500', '#0a84ff', '#af52de', '#ff2d55', '#34c759'];
-  const SPOTS = [[0.02, 0.03], [0.5, 0.02], [0.98, 0.03], [0.99, 0.4], [0.98, 0.94], [0.5, 0.97], [0.02, 0.95], [0.01, 0.45], [0.27, 0.05], [0.74, 0.95]];
+  // fractions of the free space: the edges, and the middle of the page too
+  const SPOTS = [[0.02, 0.03], [0.5, 0.02], [0.98, 0.03], [0.99, 0.4], [0.98, 0.94], [0.5, 0.97], [0.02, 0.95], [0.01, 0.45], [0.27, 0.05], [0.74, 0.95],
+    [0.5, 0.5], [0.3, 0.36], [0.7, 0.58], [0.46, 0.26], [0.36, 0.72], [0.68, 0.3]];
   let alertCount = 0;
   function alertSpot(layer, W, H) {
     const vw = innerWidth, vh = innerHeight;
@@ -220,9 +222,10 @@
   // ---------- admin settings (set from the admin panel) ----------
   //   fightBack: features switch each other on, and switch back on after being turned off
   //   autoChaos: things happen unprompted (level creeps up, monsters and ships arrive, random alerts)
+  //   chaosSeconds: how long between automatic updates
   //   muted:     ids of gags to leave out, for showing one thing in isolation
   const ADMIN_KEY = 'liquidOSAdmin';
-  const ADMIN_DEFAULTS = { fightBack: true, autoChaos: true, muted: [] };
+  const ADMIN_DEFAULTS = { fightBack: true, autoChaos: true, chaosSeconds: 20, muted: [] };
   let admin = { ...ADMIN_DEFAULTS };
   const readAdmin = (v) => ({ ...ADMIN_DEFAULTS, ...(v || {}), muted: Array.isArray(v && v.muted) ? v.muted : [] });
 

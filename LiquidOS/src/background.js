@@ -5,7 +5,8 @@
 // 2. Fighting back. While the admin setting `fightBack` is on (the default):
 //      - The cascade: features helpfully switch each other on. Low Power Mode
 //        turns on Read Aloud and Dark Mode; Dark Mode turns on Larger Text;
-//        Larger Text turns on Focus; Read Aloud turns on Low Power Mode.
+//        Larger Text turns on Focus; Focus turns on Zen Mode; Read Aloud
+//        turns on Low Power Mode.
 //      - Second thoughts: a feature that is turned off turns itself back on a few
 //        seconds later, and a Liquid Life level that is lowered is put back.
 //    This lives here, rather than in the page, so it happens once however many
@@ -16,7 +17,7 @@
 const KEY = 'liquidOS', NOTICE = 'liquidOSNotice', STAGE = 'liquidLifeStage', ADMIN = 'liquidOSAdmin';
 const STEP_MS = 1500;
 const REGRET_MS = 5000;
-const NAMES = { a11y: 'Larger Text', dark: 'Dark Mode', focus: 'Focus', lowPower: 'Low Power Mode', readAloud: 'Read Aloud' };
+const NAMES = { a11y: 'Larger Text', dark: 'Dark Mode', focus: 'Focus', lowPower: 'Low Power Mode', readAloud: 'Read Aloud', zen: 'Zen Mode' };
 const LEVELS = ['Off', 'Calm', 'Wake', 'High Seas', 'Buoyancy', 'Chaos'];
 
 // feature turned on -> [setting, value, alert title, alert body]
@@ -27,6 +28,7 @@ const CASCADE = {
   ],
   dark: [['a11y', true, 'Dark Mode', 'To keep text legible in the dark, Larger Text has been turned on.']],
   a11y: [['focus', true, 'Larger Text', 'To make room for larger text, Focus has removed the rest of the page.']],
+  focus: [['zen', true, 'Focus', 'To help you concentrate, Zen Mode has been turned on.']],
   readAloud: [['lowPower', true, 'Read Aloud', 'Speech uses significant energy. Low Power Mode has been turned on.']]
 };
 

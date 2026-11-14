@@ -14,16 +14,19 @@ operating-system update for the web: a new design language (Liquid Life) and fiv
 | **Focus** | Removes distractions | One Google result. On other sites, one paragraph |
 | **Low Power Mode** | Saves energy | About 4 frames a second, in chunky pixels |
 | **Read Aloud** | Reads the page to you | At 8.5x speed |
+| **Zen Mode** | Calming white noise | A low two-second drone at random intervals |
 
 By default the product misbehaves in two ways, each with a switch in the admin panel:
 
 - **It fights back.** Features switch each other on (Low Power Mode turns on Read Aloud and Dark Mode,
   Dark Mode turns on Larger Text, Larger Text turns on Focus), and anything you turn off or turn down
   comes back five seconds later.
-- **Chaos progresses by itself.** The Liquid Life level creeps up every half minute, ships and monsters
-  arrive unprompted, and alerts keep appearing.
+- **Chaos progresses by itself.** Shown to the user as *Automatic Updates*: a countdown pill at the top of
+  the page. Every 20 seconds (adjustable in the admin panel) the Liquid Life level goes up one, and once it
+  is at Chaos the remaining features are switched on one by one. Ships, monsters and random alerts also
+  only arrive unprompted while this is on.
 
-Alerts land around the edge of the page and stay until they are closed.
+Alerts land anywhere on the page, edges and middle, and stay until they are closed.
 
 ## Install
 
@@ -39,7 +42,7 @@ The toolbar icon opens the **Control Centre**. Everything also has a hotkey (cli
 |---|---|
 | Alt+0 ... Alt+5 | Liquid Life level: Off, Calm, Wake, High Seas, Buoyancy, Chaos |
 | Alt+. / Alt+, | Next / previous level |
-| Alt+Shift+A / D / L / F / E / R | Larger Text / Dark Mode / Light Mode / Focus / Low Power / Read Aloud |
+| Alt+Shift+A / D / L / F / E / R / Z | Larger Text / Dark Mode / Light Mode / Focus / Low Power / Read Aloud / Zen Mode |
 | Alt+S / K / M / H | Summon ships / kraken / megalodon / whale (High Seas) |
 | Alt+W | Whirlpool at the cursor (or circle the mouse fast, five laps) |
 | Alt+P | Liquid Life Dry(TM) store |
@@ -70,7 +73,7 @@ src/background.js      Read Aloud speech + fighting back
 src/water/             Wave simulation and page refraction
 src/sea/               3D scene renderer, models, cursor capture, event director
 src/effects/           Liquid Life gags, one per file
-src/features/          Larger Text, Dark/Light Mode, Focus, Low Power, Read Aloud
+src/features/          Larger Text, Dark/Light Mode, Focus, Low Power, Read Aloud, Zen Mode
 src/main-world/        Page-side frame throttle used by Low Power Mode
 demo/index.html        Offline test page
 ```

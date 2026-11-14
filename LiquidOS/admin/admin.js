@@ -3,12 +3,13 @@
 // the extension's Options). It writes the same settings the product uses, plus
 // the admin settings that decide whether the product is allowed to misbehave:
 //
-//   liquidOSAdmin = { fightBack, autoChaos, muted: [gag ids] }
+//   liquidOSAdmin = { fightBack, autoChaos, chaosSeconds, muted: [gag ids] }
 //
 // With both switches off, nothing happens unless you make it happen here.
-const STAGE_KEY = 'liquidLifeStage', OS_KEY = 'liquidOS', ADMIN_KEY = 'liquidOSAdmin';
-const OS_DEFAULTS = { a11y: false, dark: 'off', focus: false, lowPower: false, readAloud: false };
-const ADMIN_DEFAULTS = { fightBack: true, autoChaos: true, muted: [] };
+const STAGE_KEY = 'liquidLifeStage', OS_KEY = 'liquidOS', ADMIN_KEY = 'liquidOSAdmin', CHAOS_AT = 'liquidOSChaosAt';
+const OS_DEFAULTS = { a11y: false, dark: 'off', focus: false, lowPower: false, readAloud: false, zen: false };
+const ADMIN_DEFAULTS = { fightBack: true, autoChaos: true, chaosSeconds: 20, muted: [] };
+const SPEEDS = [10, 20, 40];
 
 const STAGES = [
   ['Off', 'Liquid Life is off.'],
@@ -20,12 +21,14 @@ const STAGES = [
 ];
 const FEATURES = [
   ['a11y', 'Larger Text', 'A'], ['dark', 'Dark Mode', 'D'], ['blinding', 'Light Mode', 'L'],
-  ['focus', 'Focus', 'F'], ['lowPower', 'Low Power', 'E'], ['readAloud', 'Read Aloud', 'R']
+  ['focus', 'Focus', 'F'], ['lowPower', 'Low Power', 'E'], ['readAloud', 'Read Aloud', 'R'],
+  ['zen', 'Zen Mode', 'Z']
 ];
 const ACTIONS = [
   ['ships', 'Ship battle'], ['kraken', 'Kraken'], ['megalodon', 'Megalodon'],
   ['whale', 'Whale'], ['whirlpool', 'Whirlpool'], ['paywall', 'Dry™ store'],
-  ['notify', 'Test alert'], ['clear', 'Clear alerts'], ['escalate', 'Chaos +1 step']
+  ['notify', 'Test alert'], ['clear', 'Clear alerts'], ['escalate', 'Chaos +1 step'],
+  ['beep', 'Beep']
 ];
 // gag id -> label, for the "leave out" chips
 const GAGS = [
@@ -35,7 +38,7 @@ const GAGS = [
   ['notifications', 'Random alerts']
 ];
 
-let stage = 1, settings = { ...OS_DEFAULTS }, admin = { ...ADMIN_DEFAULTS };
+let stage = 1, settings = { ...OS_DEFAULTS }, admin = { ...ADMIN_DEFAULTS }, chaosAt = 0;
 const $ = (id) => document.getElementById(id);
 const save = (obj) => chrome.storage.local.set(obj);
 const isOn = (id) => id === 'dark' ? settings.dark === 'torch' : id === 'blinding' ? settings.dark === 'blinding' : !!settings[id];
@@ -55,6 +58,13 @@ function render() {
     ? 'Isolation: nothing changes unless you change it here.'
     : admin.fightBack && admin.autoChaos ? 'Product behaviour: it fights back and escalates.'
       : admin.fightBack ? 'It fights back, but nothing starts by itself.' : 'It escalates by itself, but every switch is obeyed.';
+
+  $('chaosSpeed').replaceChildren(...SPEEDS.map((sec) => {
+    const b = button(sec + 's', sec === admin.chaosSeconds ? 'on' : '', () => save({ [ADMIN_KEY]: { ...admin, chaosSeconds: sec }, [CHAOS_AT]: Date.now() + sec * 1000 }));
+    b.title = `One step every ${sec} seconds`;
+    return b;
+  }));
+  renderChaos();
 
   $('stages').replaceChildren(...STAGES.map(([name], i) => {
     const b = button(String(i), i === stage ? 'on' : '', () => save({ [STAGE_KEY]: i }));
@@ -92,6 +102,24 @@ function render() {
   }));
 }
 
+// The countdown to the next automatic step, as the page itself shows it.
+function nextStepName() {
+  if (stage < 5) return STAGES[stage + 1][0];
+  const off = FEATURES.filter(([id]) => id !== 'blinding' && !isOn(id) && !(id === 'dark' && settings.dark !== 'off'));
+  return off.length ? 'a feature switches on' : null;
+}
+function renderChaos() {
+  const text = $('chaosText'), bar = $('chaosBar');
+  const what = nextStepName();
+  if (!admin.autoChaos) { text.textContent = 'Paused. Nothing will step by itself.'; bar.style.width = '0'; return; }
+  if (!what) { text.textContent = 'Finished: everything is already on.'; bar.style.width = '100%'; return; }
+  const left = chaosAt - Date.now(), total = admin.chaosSeconds * 1000;
+  if (!chaosAt || left > total + 1500) { text.textContent = `Next: ${what}. Waiting for a visible page.`; bar.style.width = '0'; return; }
+  text.textContent = left > 0 ? `Next: ${what} in ${Math.ceil(left / 1000)}s` : `Next: ${what}. Waiting for a visible page.`;
+  bar.style.width = Math.min(100, Math.max(0, (1 - left / total) * 100)).toFixed(1) + '%';
+}
+setInterval(renderChaos, 250);
+
 // Send a command to the page the audience is looking at: the active tab of each
 // ordinary browser window (this panel lives in its own popup window).
 async function sendToPage(cmd) {
@@ -103,7 +131,11 @@ async function sendToPage(cmd) {
 
 $('actions').replaceChildren(...ACTIONS.map(([cmd, label]) => button(label, '', () => sendToPage(cmd))));
 $('fightBack').addEventListener('change', (e) => save({ [ADMIN_KEY]: { ...admin, fightBack: e.target.checked } }));
-$('autoChaos').addEventListener('change', (e) => save({ [ADMIN_KEY]: { ...admin, autoChaos: e.target.checked } }));
+// Switching chaos on starts a fresh countdown, so the first step is a full interval away.
+$('autoChaos').addEventListener('change', (e) => save({
+  [ADMIN_KEY]: { ...admin, autoChaos: e.target.checked },
+  [CHAOS_AT]: Date.now() + admin.chaosSeconds * 1000
+}));
 
 // "Everything off" turns the product off but leaves the two switches alone, so if
 // fighting back is on, it will come back. That is the thing being demonstrated.
@@ -112,7 +144,8 @@ $('reset').addEventListener('click', () => save({ [STAGE_KEY]: 1, [OS_KEY]: { ..
 
 const readAdmin = (v) => ({ ...ADMIN_DEFAULTS, ...(v || {}), muted: Array.isArray(v && v.muted) ? v.muted : [] });
 
-chrome.storage.local.get([STAGE_KEY, OS_KEY, ADMIN_KEY]).then((got) => {
+chrome.storage.local.get([STAGE_KEY, OS_KEY, ADMIN_KEY, CHAOS_AT]).then((got) => {
+  chaosAt = Number(got[CHAOS_AT]) || 0;
   if (typeof got[STAGE_KEY] === 'number') stage = Math.min(5, Math.max(0, got[STAGE_KEY]));
   settings = { ...OS_DEFAULTS, ...(got[OS_KEY] || {}) };
   admin = readAdmin(got[ADMIN_KEY]);
@@ -122,5 +155,6 @@ chrome.storage.onChanged.addListener((changes) => {
   if (changes[STAGE_KEY]) stage = Math.min(5, Math.max(0, changes[STAGE_KEY].newValue));
   if (changes[OS_KEY]) settings = { ...OS_DEFAULTS, ...(changes[OS_KEY].newValue || {}) };
   if (changes[ADMIN_KEY]) admin = readAdmin(changes[ADMIN_KEY].newValue);
-  render();
+  if (changes[CHAOS_AT]) chaosAt = Number(changes[CHAOS_AT].newValue) || 0;
+  if (changes[STAGE_KEY] || changes[OS_KEY] || changes[ADMIN_KEY]) render(); else renderChaos();
 });

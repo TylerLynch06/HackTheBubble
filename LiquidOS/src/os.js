@@ -1,7 +1,7 @@
 // Liquid OS settings: the five features that ship alongside Liquid Life.
 // One object in chrome.storage, shared by every tab and the Control Centre.
 //
-//   settings: { a11y: bool, dark: 'off' | 'torch' | 'blinding', focus: bool, lowPower: bool, readAloud: bool }
+//   settings: { a11y: bool, dark: 'off' | 'torch' | 'blinding', focus: bool, lowPower: bool, readAloud: bool, zen: bool }
 //
 //   Liquid.os.feature({ id, isOn(settings), start(settings), stop(), update(settings) })
 //   Liquid.os.get() / Liquid.os.set({ focus: true }) / Liquid.os.toggle('focus') / Liquid.os.allOff()
@@ -12,8 +12,8 @@
 (() => {
   const L = window.Liquid;
   const KEY = 'liquidOS', NOTICE = 'liquidOSNotice';
-  const DEFAULTS = { a11y: false, dark: 'off', focus: false, lowPower: false, readAloud: false };
-  const HOTKEYS = { KeyA: 'a11y', KeyD: 'dark', KeyL: 'blinding', KeyF: 'focus', KeyE: 'lowPower', KeyR: 'readAloud' };
+  const DEFAULTS = { a11y: false, dark: 'off', focus: false, lowPower: false, readAloud: false, zen: false };
+  const HOTKEYS = { KeyA: 'a11y', KeyD: 'dark', KeyL: 'blinding', KeyF: 'focus', KeyE: 'lowPower', KeyR: 'readAloud', KeyZ: 'zen' };
 
   const features = [];
   const running = new Set();
@@ -67,6 +67,8 @@
       setTimeout(() => L.whirlpool.open(innerWidth / 2, innerHeight / 2), L.stage < 1 ? 600 : 0);
     } else if (msg.cmd === 'notify') {
       L.util.toast('Software Update', 'Liquid OS 26.1 is ready to install. It fixes nothing.');
+    } else if (msg.cmd === 'beep') {
+      L.zen.drone();
     } else if (msg.cmd === 'clear') {
       L.util.clearToasts();
     } else if (msg.cmd === 'escalate') {
