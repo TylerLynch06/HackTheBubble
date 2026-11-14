@@ -87,3 +87,6 @@ footer button {
   background: rgba(11, 31, 51, .08); color: var(--ink);
 }
 footer button:hover { background: rgba(11, 31, 51, .14); }
+
+footer a { margin-left: auto; color: var(--muted); font-size: 11px; text-decoration: none; opacity: .7; }
+footer a:hover { opacity: 1; text-decoration: underline; }

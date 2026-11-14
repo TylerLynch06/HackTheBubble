@@ -21,7 +21,7 @@
   function next() {
     const chaos = L.stage >= L.CHAOS;
     timer = setTimeout(() => {
-      if (!document.hidden) {
+      if (L.admin.autoChaos && !document.hidden) {
         if (!deck.length) deck = NOTES.slice().sort(() => Math.random() - 0.5);
         const [title, body] = deck.pop();
         L.util.toast(title, body);

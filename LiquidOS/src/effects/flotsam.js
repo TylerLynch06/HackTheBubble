@@ -59,7 +59,7 @@
   }
 
   function tick() {
-    if (L.stage >= L.CHAOS && !document.hidden) {
+    if (L.admin.autoChaos && L.stage >= L.CHAOS && !document.hidden) {
       knockAt(L.util.rand(20, innerWidth - 20), L.util.rand(20, innerHeight - 20));
     }
     timer = setTimeout(tick, L.util.rand(140, 460));

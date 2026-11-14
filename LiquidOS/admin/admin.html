@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Liquid OS Admin</title>
+  <link rel="stylesheet" href="../popup/popup.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin">
+  <header>
+    <div>
+      <h1>Liquid OS <span>Admin</span></h1>
+      <p>Presenter controls. Not part of the product.</p>
+    </div>
+    <div class="badge warn">Backstage</div>
+  </header>
+
+  <div class="eyebrow pad">Behaviour</div>
+  <section class="switches">
+    <label class="switch-row">
+      <span>
+        <b>Control Centre fights back</b>
+        <small>Features switch each other on, and anything you turn off or turn down comes back after 5 seconds.</small>
+      </span>
+      <input type="checkbox" id="fightBack">
+    </label>
+    <label class="switch-row">
+      <span>
+        <b>Chaos progresses by itself</b>
+        <small>The level creeps up, ships and monsters arrive unprompted, alerts appear, letters come loose.</small>
+      </span>
+      <input type="checkbox" id="autoChaos">
+    </label>
+    <p class="note" id="modeNote"></p>
+  </section>
+
+  <div class="eyebrow pad">Liquid Life level</div>
+  <section class="card slim">
+    <div class="segments" id="stages" role="radiogroup" aria-label="Liquid Life level"></div>
+    <div class="hint" id="stageHint"></div>
+  </section>
+
+  <div class="eyebrow pad">Features</div>
+  <section class="tiles" id="tiles"></section>
+
+  <div class="eyebrow pad">Trigger on the page being shown</div>
+  <section class="actions" id="actions"></section>
+
+  <div class="eyebrow pad">Leave out (to show one thing in isolation)</div>
+  <section class="chips" id="mutes"></section>
+
+  <footer>
+    <button id="allOff">Everything off</button>
+    <button id="reset">Reset to product defaults</button>
+  </footer>
+
+  <script src="admin.js"></script>
+</body>
+</html>

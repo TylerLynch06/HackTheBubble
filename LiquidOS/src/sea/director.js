@@ -13,7 +13,7 @@
   function schedule(ms) {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      if (!document.hidden && !L.sea.busy && !L.whirlpool?.active) {
+      if (L.admin.autoChaos && !document.hidden && !L.sea.busy && !L.whirlpool?.active) {
         [L.kraken, L.megalodon, L.whale][next++ % 3].summon();
       }
       schedule(L.util.rand(18000, 26000));

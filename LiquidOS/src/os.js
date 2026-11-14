@@ -65,6 +65,12 @@
     } else if (msg.cmd === 'whirlpool') {
       if (L.stage < 1) L.setStage(1);
       setTimeout(() => L.whirlpool.open(innerWidth / 2, innerHeight / 2), L.stage < 1 ? 600 : 0);
+    } else if (msg.cmd === 'notify') {
+      L.util.toast('Software Update', 'Liquid OS 26.1 is ready to install. It fixes nothing.');
+    } else if (msg.cmd === 'clear') {
+      L.util.clearToasts();
+    } else if (msg.cmd === 'escalate') {
+      L.autoChaos.stepNow();
     } else if (msg.cmd === 'paywall') {
       window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyP', altKey: true }));
     }
@@ -85,7 +91,7 @@
             if (area !== 'local') return;
             if (changes[KEY]) { settings = { ...DEFAULTS, ...(changes[KEY].newValue || {}) }; apply(); }
             const n = changes[NOTICE] && changes[NOTICE].newValue;
-            if (n && !document.hidden) L.util.toast(n.title, n.body, 4600);
+            if (n && !document.hidden) L.util.toast(n.title, n.body);
           });
           chrome.runtime.onMessage.addListener(onMessage);
           const got = await store.get(KEY);
@@ -93,6 +99,7 @@
         } catch (e) { /* not an extension context */ }
       }
       booted = true;
+      if (L.autoChaos) L.autoChaos.start();
       apply();
     }
   };

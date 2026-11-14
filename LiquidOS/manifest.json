@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Liquid OS 26",
-  "version": "26.0.0",
+  "version": "26.0.1",
   "description": "The biggest update to the web, ever. Liquid Life, Larger Text, Dark Mode, Focus, Low Power Mode and Read Aloud.",
   "icons": {
     "16": "icons/icon16.png",
@@ -15,6 +15,7 @@
     "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png" }
   },
   "background": { "service_worker": "src/background.js" },
+  "options_page": "admin/admin.html",
   "permissions": ["storage", "tts"],
   "content_scripts": [
     {
@@ -31,6 +32,7 @@
         "src/water/refract.js",
         "src/core.js",
         "src/os.js",
+        "src/auto-chaos.js",
         "src/bodies.js",
         "src/sea/cursor.js",
         "src/sea/scene.js",

@@ -93,6 +93,12 @@ document.getElementById('actions').replaceChildren(...ACTIONS.map(([cmd, label, 
   return b;
 }));
 
+// Backstage: the admin panel opens in its own small window so it can sit beside the demo.
+document.getElementById('admin').addEventListener('click', (e) => {
+  e.preventDefault();
+  chrome.windows.create({ url: chrome.runtime.getURL('admin/admin.html'), type: 'popup', width: 470, height: 860 });
+});
+
 document.getElementById('allOff').addEventListener('click', () => {
   chrome.storage.local.set({ [STAGE_KEY]: 0, [OS_KEY]: { ...DEFAULTS } });
 });

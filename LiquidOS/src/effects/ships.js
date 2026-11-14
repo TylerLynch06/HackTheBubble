@@ -233,7 +233,7 @@
   // Keep the sea busy: top the fleet up at random, favouring whichever side is losing.
   function reinforce() {
     if (!running) return;
-    if (!document.hidden && ships.length < MAX_SHIPS) {
+    if (L.admin.autoChaos && !document.hidden && ships.length < MAX_SHIPS) {
       const count = (k) => ships.filter((s) => s.kind === k).length;
       const p = count('pirate'), n = count('navy');
       let kind = p < n ? 'pirate' : n < p ? 'navy' : L.util.pick(['pirate', 'navy']);
@@ -255,7 +255,7 @@
     min: 3,
     start() {
       running = true;
-      spawnTimer = setTimeout(() => { battle(); reinforce(); }, 1800);
+      spawnTimer = setTimeout(() => { if (L.admin.autoChaos) battle(); reinforce(); }, 1800);
     },
     stop() {
       running = false;
