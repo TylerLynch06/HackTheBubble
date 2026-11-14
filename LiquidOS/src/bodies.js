@@ -1,10 +1,9 @@
 // Bodies: page content that the water has picked up. One small physics system
-// shared by the tide (floats things on the surface), the whirlpool (sucks them in
-// and spits them out) and flotsam (loose letters).
+// shared by the whirlpool (sucks things in and spits them out), buoyancy (floats
+// and sinks them) and flotsam (loose letters).
 //
 //   Liquid.bodies.pickup(filter, cap)     lift page elements in view; filter(rect) optional
 //   Liquid.bodies.addFree(el, x, y, w, h) add one of our own floating elements (a loose letter)
-//   Liquid.bodies.tide = { active, y }    water surface in viewport px, set by the tide
 //   Liquid.bodies.setBuoy(el, v)          v > 0 floats to the top, v < 0 sinks, while buoyancy.active
 //   Liquid.bodies.startVortex(x, y, dir)  everything orbits this point; setVortexSpeed(s) spins it up
 //   Liquid.bodies.gulp()                  the orbit collapses down the drain
@@ -20,7 +19,6 @@
 
   const bodies = [];
   const byEl = new Map();
-  const tide = { active: false, y: 0 };
   const buoyancy = { active: false };
   let vortex = null;
   let raf = 0;
@@ -148,30 +146,17 @@
         b.vx = b.vy = 0;
       } else {
         let fx = 0, fy = 0, damp = 0.9, done = false;
-        const wet = tide.active && b.py > tide.y - 6;
-        const homeWet = !b.free && tide.active && homeY + b.h / 2 > tide.y + 4;
 
         if (b.fling > 0) {
           // Just spat out of the whirlpool: fly free for a moment.
           b.fling--; damp = 0.955; b.rot += b.vr;
         } else if (b.free) {
-          if (wet || !tide.active) {
-            // Loose letters drift on the surface and ride the waves.
-            const s = L.water.slopeAt(b.px, b.py);
-            fy += (tide.active ? (tide.y + 6 + b.seed * 46 - b.py) * 0.02 : 0) - s.y * 1.5;
-            fx += Math.sin(t * 0.9 + b.seed * 20) * 0.07 - s.x * 1.5;
-            b.vr = (b.vr + (s.x - s.y) * 2) * 0.95;
-            b.rot += b.vr; damp = 0.95;
-          } else {
-            damp = 0.82; b.vr *= 0.9; b.rot += b.vr; // stranded on the beach
-          }
-        } else if (homeWet) {
-          // The water has reached this element: lift it to the surface and let it bob.
-          const depth = 8 + b.seed * 70 + b.h * 0.35;
-          fy += (tide.y + depth - b.py) * 0.028;
-          fx += (homeX + Math.sin(t * 0.6 + b.seed * 20) * 46 - b.px) * 0.012;
-          b.rot += (Math.sin(t * 1.2 + b.seed * 9) * 9 - b.rot) * 0.06;
-          damp = 0.92;
+          // Loose letters drift on the surface and ride the waves.
+          const s = L.water.slopeAt(b.px, b.py);
+          fy -= s.y * 1.5;
+          fx += Math.sin(t * 0.9 + b.seed * 20) * 0.07 - s.x * 1.5;
+          b.vr = (b.vr + (s.x - s.y) * 2) * 0.95;
+          b.rot += b.vr; damp = 0.95;
         } else if (b.buoy > 0 && buoyancy.active) {
           // Unimportant content floats: up to the top of the window, bobbing gently.
           const ty = 12 + b.seed * 46 + b.h / 2 + Math.sin(t * 1.1 + b.seed * 30) * 7;
@@ -229,7 +214,6 @@
   function wake() { if (!raf) raf = requestAnimationFrame(step); }
 
   L.bodies = {
-    tide,
     buoyancy, setBuoy,
     has: (el) => byEl.has(el),
     pickup, addFree, remove,
@@ -252,7 +236,7 @@
     },
     removeFree() { for (const b of bodies.filter((x) => x.free)) remove(b); },
     releaseAll() {
-      cancelAnimationFrame(raf); raf = 0; vortex = null; tide.active = false; buoyancy.active = false;
+      cancelAnimationFrame(raf); raf = 0; vortex = null; buoyancy.active = false;
       for (const b of bodies.splice(0)) release(b);
     }
   };

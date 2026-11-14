@@ -1,0 +1,10 @@
+# Local tooling
+.claude/
+
+# Packaged builds
+*.zip
+
+# OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini

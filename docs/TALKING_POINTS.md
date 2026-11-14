@@ -229,7 +229,7 @@ Pick whichever you can speak to: bending the live page fast enough (the 11 ms to
 renderer with a waterline, or faking cursor capture when the browser doesn't allow it.
 
 **"What didn't work?"**
-We built a rising tide with a beach wave and removed it; it is still in the code, switched off. Click-drift
+We built a rising tide with a beach wave and removed it. Click-drift
 (clicks landing downstream of where you aimed) was cut too.
 
 **"What would you do next?"**
