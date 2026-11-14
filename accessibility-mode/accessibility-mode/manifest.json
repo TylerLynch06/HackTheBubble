@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Accessibility Mode",
+  "version": "1.0.0",
+  "description": "Makes text huge on any website, with high-contrast colors, bold text, wider spacing and more.",
+  "permissions": ["storage", "activeTab"],
+  "background": { "service_worker": "background.js" },
+  "commands": {
+    "toggle":  { "suggested_key": { "default": "Alt+Shift+A" },    "description": "Turn Accessibility Mode on or off" },
+    "bigger":  { "suggested_key": { "default": "Alt+Shift+Up" },   "description": "Make text bigger" },
+    "smaller": { "suggested_key": { "default": "Alt+Shift+Down" }, "description": "Make text smaller" }
+  },
+  "action": {
+    "default_title": "Accessibility Mode",
+    "default_popup": "popup.html",
+    "default_icon": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" }
+  },
+  "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}

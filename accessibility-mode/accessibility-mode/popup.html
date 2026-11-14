@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><link rel="stylesheet" href="popup.css"></head>
+<body>
+  <main>
+    <header>
+      <h1>Accessibility Mode</h1>
+      <label class="switch"><input type="checkbox" id="enabled" aria-label="Accessibility Mode on or off"><span></span></label>
+    </header>
+
+    <section aria-labelledby="size-h">
+      <div class="row"><h2 id="size-h">Text size</h2><output id="scale-o" for="scale"></output></div>
+      <div class="presets" role="group" aria-label="Text size presets">
+        <button type="button" data-v="100">Normal</button>
+        <button type="button" data-v="150">Large</button>
+        <button type="button" data-v="250">Huge</button>
+        <button type="button" data-v="400">Enormous</button>
+      </div>
+      <input type="range" id="scale" min="100" max="500" step="10" aria-label="Text size">
+      <p id="preview" aria-hidden="true">Can you read this?</p>
+    </section>
+
+    <section aria-labelledby="col-h">
+      <h2 id="col-h">Colors</h2>
+      <div class="themes" role="group" aria-label="Color themes">
+        <button type="button" data-t="off" class="t-off">Aa<small>Normal</small></button>
+        <button type="button" data-t="wb"  class="t-wb">Aa<small>White on black</small></button>
+        <button type="button" data-t="yb"  class="t-yb">Aa<small>Yellow on black</small></button>
+        <button type="button" data-t="bk"  class="t-bk">Aa<small>Black on cream</small></button>
+      </div>
+    </section>
+
+    <section aria-labelledby="more-h">
+      <h2 id="more-h">Easier reading</h2>
+      <div class="row"><label for="bold">Bold text</label><label class="switch"><input type="checkbox" id="bold"><span></span></label></div>
+      <div class="row"><label for="spacing">Wider spacing</label><label class="switch"><input type="checkbox" id="spacing"><span></span></label></div>
+      <div class="row"><label for="links">Underline links</label><label class="switch"><input type="checkbox" id="links"><span></span></label></div>
+      <div class="row"><label for="still">Stop animations</label><label class="switch"><input type="checkbox" id="still"><span></span></label></div>
+      <div class="row"><label for="bigCursor">Big mouse pointer</label><label class="switch"><input type="checkbox" id="bigCursor"><span></span></label></div>
+    </section>
+
+    <button id="site" type="button" class="wide"></button>
+    <p class="keys">Alt+Shift+A on or off. Alt+Shift+Up or Down for size.</p>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
