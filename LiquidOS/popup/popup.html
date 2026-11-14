@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Liquid OS Control Centre</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Liquid OS <span>26</span></h1>
+      <p>Control Centre</p>
+    </div>
+    <div class="badge">Up to date</div>
+  </header>
+
+  <section class="card hero">
+    <div class="row">
+      <div>
+        <div class="eyebrow">Design language</div>
+        <div class="title">Liquid Life</div>
+      </div>
+      <div class="state" id="stageName">Calm</div>
+    </div>
+    <div class="segments" id="stages" role="radiogroup" aria-label="Liquid Life level"></div>
+    <div class="hint" id="stageHint"></div>
+  </section>
+
+  <div class="eyebrow pad">Features</div>
+  <section class="tiles" id="tiles"></section>
+
+  <div class="eyebrow pad">On this page</div>
+  <section class="actions" id="actions"></section>
+
+  <footer>
+    <button id="allOff">Turn everything off</button>
+    <span>or press Esc three times</span>
+    <a href="#" id="admin" title="Presenter controls">Admin</a>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
