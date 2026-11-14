@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Rapid Page Reader",
+  "version": "1.0.0",
+  "description": "Reads the current web page aloud at very high speed.",
+  "permissions": ["activeTab", "scripting", "tts"],
+  "action": {
+    "default_title": "Read this page",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
